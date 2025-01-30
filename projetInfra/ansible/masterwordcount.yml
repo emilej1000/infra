@@ -1,0 +1,40 @@
+- name: lancer wordcount sur le master uniquement
+  hosts: master_container
+  tasks:
+
+    - name: exporter les home
+      ansible.builtin.shell: 
+        cmd: "export HADOOP_HOME=/root/spark/hadoop-2.7.1
+              export JAVA_HOME=/root/spark/jdk1.8.0_202
+              export SPARK_HOME=/root/spark/spark-2.4.3-bin-hadoop2.7
+              export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/spark/jdk1.8.0_202/bin:/root/spark/hadoop-2.7.1/bin:/root/spark/hadoop-2.7.1/sbin:/root/spark/spark-2.4.3-bin-hadoop2.7/bin:/root/spark/spark-2.4.3-bin-hadoop2.7/sbin"
+
+    - name: copier les fichiers de configuration
+      ansible.builtin.copy:
+        src: ../hadoop-2.7.1/etc/hadoop/core-site.xml
+        dest: /root/spark/hadoop-2.7.1/etc/hadoop/core-site.xml
+        remote_src: no
+
+    - name: copier les fichiers de configuration
+      ansible.builtin.copy:
+        src: ../hadoop-2.7.1/etc/hadoop/hdfs-site.xml
+        dest: /root/spark/hadoop-2.7.1/etc/hadoop/hdfs-site.xml
+        remote_src: no
+
+    - name: copier les fichiers de configuration
+      ansible.builtin.copy:
+        src: ../hadoop-2.7.1/etc/hadoop/hadoop-env.sh
+        dest: /root/spark/hadoop-2.7.1/etc/hadoop/hadoop-env.sh
+        remote_src: no
+
+    - name: copier dossier wordcount si non existant
+      ansible.builtin.copy:
+        src: ../TP-Spark/
+        dest: /root/spark/TP-Spark/
+        remote_src: no
+      ignore_errors: yes
+
+
+    - name: lancer wordcount
+      ansible.builtin.shell: 
+        cmd: /root/spark/spark-2.4.3-bin-hadoop2.7/bin/spark-submit --class pack.SparkWordCount --master local wc.jar

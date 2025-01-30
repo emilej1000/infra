@@ -1,0 +1,29 @@
+- name: Générer et distribuer des clés SSH entre les conteneurs
+  hosts: localhost
+  become: no
+  tasks:
+
+    - name: Afficher la clé publique générée dans localhost
+      ansible.builtin.shell:
+        cmd: "cat ~/.ssh/id_rsa.pub"
+      register: public_key
+      changed_when: false
+
+    - name: Copier la clé publique dans master
+      ansible.builtin.shell:
+        cmd: "docker exec master /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+
+
+    - name: Copier la clé publique dans slave-3
+      ansible.builtin.shell:
+        cmd: "docker exec slave-3 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+      
+
+    - name: Copier la clé publique dans slave-1
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/docker exec slave-1 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+
+
+    - name: Copier la clé publique dans slave-2
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/docker exec slave-2 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"

@@ -1,0 +1,38 @@
+Spark Executor Command: "/home/ejeandon/N7/3A/InfraBigData/jdk1.8.0_202/bin/java" "-cp" "/home/ejeandon/N7/3A/InfraBigData/spark-2.4.3-bin-hadoop2.7/conf/:/home/ejeandon/N7/3A/InfraBigData/spark-2.4.3-bin-hadoop2.7/jars/*" "-Xmx1024M" "-Dspark.driver.port=35039" "org.apache.spark.executor.CoarseGrainedExecutorBackend" "--driver-url" "spark://CoarseGrainedScheduler@cobalt.enseeiht.fr:35039" "--executor-id" "1" "--hostname" "147.127.135.75" "--cores" "20" "--app-id" "app-20241105092758-0000" "--worker-url" "spark://Worker@147.127.135.75:36831"
+========================================
+
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+24/11/05 09:27:59 INFO CoarseGrainedExecutorBackend: Started daemon with process name: 568076@poe.enseeiht.fr
+24/11/05 09:27:59 INFO SignalUtils: Registered signal handler for TERM
+24/11/05 09:27:59 INFO SignalUtils: Registered signal handler for HUP
+24/11/05 09:27:59 INFO SignalUtils: Registered signal handler for INT
+24/11/05 09:27:59 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+24/11/05 09:27:59 INFO SecurityManager: Changing view acls to: ejeandon
+24/11/05 09:27:59 INFO SecurityManager: Changing modify acls to: ejeandon
+24/11/05 09:27:59 INFO SecurityManager: Changing view acls groups to: 
+24/11/05 09:27:59 INFO SecurityManager: Changing modify acls groups to: 
+24/11/05 09:27:59 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ejeandon); groups with view permissions: Set(); users  with modify permissions: Set(ejeandon); groups with modify permissions: Set()
+24/11/05 09:27:59 INFO TransportClientFactory: Successfully created connection to cobalt.enseeiht.fr/147.127.133.69:35039 after 30 ms (0 ms spent in bootstraps)
+24/11/05 09:27:59 INFO SecurityManager: Changing view acls to: ejeandon
+24/11/05 09:27:59 INFO SecurityManager: Changing modify acls to: ejeandon
+24/11/05 09:27:59 INFO SecurityManager: Changing view acls groups to: 
+24/11/05 09:27:59 INFO SecurityManager: Changing modify acls groups to: 
+24/11/05 09:27:59 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(ejeandon); groups with view permissions: Set(); users  with modify permissions: Set(ejeandon); groups with modify permissions: Set()
+24/11/05 09:27:59 INFO TransportClientFactory: Successfully created connection to cobalt.enseeiht.fr/147.127.133.69:35039 after 2 ms (0 ms spent in bootstraps)
+24/11/05 09:27:59 INFO DiskBlockManager: Created local directory at /tmp/spark-1551c35a-219b-496e-916c-71f16f7d1cb9/executor-e59f9926-b040-4e94-a7df-a9f2ca4f490a/blockmgr-22acf06a-d24b-49a8-bc69-c3a8c9a5658a
+24/11/05 09:27:59 INFO MemoryStore: MemoryStore started with capacity 366.3 MB
+24/11/05 09:27:59 INFO CoarseGrainedExecutorBackend: Connecting to driver: spark://CoarseGrainedScheduler@cobalt.enseeiht.fr:35039
+24/11/05 09:27:59 INFO WorkerWatcher: Connecting to worker spark://Worker@147.127.135.75:36831
+24/11/05 09:27:59 INFO TransportClientFactory: Successfully created connection to /147.127.135.75:36831 after 0 ms (0 ms spent in bootstraps)
+24/11/05 09:27:59 INFO WorkerWatcher: Successfully connected to spark://Worker@147.127.135.75:36831
+24/11/05 09:27:59 INFO CoarseGrainedExecutorBackend: Successfully registered with driver
+24/11/05 09:27:59 INFO Executor: Starting executor ID 1 on host 147.127.135.75
+24/11/05 09:27:59 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 33097.
+24/11/05 09:27:59 INFO NettyBlockTransferService: Server created on 147.127.135.75:33097
+24/11/05 09:27:59 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+24/11/05 09:27:59 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(1, 147.127.135.75, 33097, None)
+24/11/05 09:27:59 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(1, 147.127.135.75, 33097, None)
+24/11/05 09:27:59 INFO BlockManager: Initialized BlockManager: BlockManagerId(1, 147.127.135.75, 33097, None)
+24/11/05 09:28:00 INFO CoarseGrainedExecutorBackend: Driver commanded a shutdown
+24/11/05 09:28:00 ERROR CoarseGrainedExecutorBackend: RECEIVED SIGNAL TERM
+tdown

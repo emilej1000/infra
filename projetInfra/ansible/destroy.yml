@@ -1,0 +1,17 @@
+- name: Déployer des conteneurs Docker avec Terraform sur macOS
+  hosts: localhost
+  tasks:
+
+    - name: Détruire Terraform
+      ansible.builtin.shell:
+        cmd: "terraform destroy -auto-approve"
+        chdir: /tmp/terraform_project/
+
+- name: Déployer des conteneurs Docker avec Terraform sur macOS
+  hosts: remote_host
+  tasks:
+
+    - name: Détruire Terraform
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/terraform destroy -auto-approve"
+        chdir: /tmp/terraform_project/

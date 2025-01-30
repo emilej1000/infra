@@ -1,0 +1,9 @@
+- name: ajouter hadoop sur les containers
+  hosts: master_container
+  tasks:
+   
+    - name: Copier les fichiers Terraform
+      ansible.builtin.copy:
+        src: ../hadoop-2.7.1/
+        dest: /bin/hadoop-2.7.1/
+        remote_src: no

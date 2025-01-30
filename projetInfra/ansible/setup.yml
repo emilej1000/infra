@@ -1,0 +1,51 @@
+---
+- name: Install JDK, Hadoop, and Spark on Ubuntu cluster nodes
+  hosts: containers
+  become: yes 
+  tasks:
+
+    - name: creation du dossier spark
+      ansible.builtin.shell: mkdir /root/spark
+
+    - name: installer java
+      ansible.builtin.shell:
+        cmd: wget https://sd-160040.dedibox.fr/hagimont/software/jdk-8u202-linux-x64.tar.gz
+        chdir: /tmp/
+
+    - name: extraire java
+      ansible.builtin.shell:
+        cmd: tar -xvf jdk-8u202-linux-x64.tar.gz -C /root/spark/ && rm jdk-8u202-linux-x64.tar.gz
+        chdir: /tmp/
+
+    - name: installer hadoop
+      ansible.builtin.shell:
+        cmd: wget https://sd-160040.dedibox.fr/hagimont/software/hadoop-2.7.1.tar.gz
+        chdir: /tmp/
+
+    - name: extraire Hadoop
+      ansible.builtin.shell:
+        cmd: tar -xvf hadoop-2.7.1.tar.gz -C /root/spark/ && rm hadoop-2.7.1.tar.gz
+        chdir: /tmp/
+
+    - name: installer spark
+      ansible.builtin.shell:
+        cmd: wget https://sd-160040.dedibox.fr/hagimont/software/spark-2.4.3-bin-hadoop2.7.tgz
+        chdir: /tmp/
+
+    - name: extraire Spark
+      ansible.builtin.shell:
+        cmd: tar -xvf spark-2.4.3-bin-hadoop2.7.tgz -C /root/spark/ && rm spark-2.4.3-bin-hadoop2.7.tgz
+        chdir: /tmp/
+
+    - name: ajouter hadoop dans le path
+      ansible.builtin.shell: echo "export HADOOP_HOME=/root/spark/hadoop-2.7.1" >> /root/.bashrc
+
+    - name: ajouter jdk dans le path
+      ansible.builtin.shell: echo "export JAVA_HOME=/root/spark/jdk1.8.0_202" >> /root/.bashrc
+
+    - name: ajouter spark dans le path
+      ansible.builtin.shell: echo "export SPARK_HOME=/root/spark/spark-2.4.3-bin-hadoop2.7" >> /root/.bashrc
+
+    - name: ajouter spark dans le path
+      ansible.builtin.shell: echo "export PATH=$PATH:/root/spark/jdk1.8.0_202/bin:/root/spark/hadoop-2.7.1/bin:/root/spark/hadoop-2.7.1/sbin:/root/spark/spark-2.4.3-bin-hadoop2.7/bin:/root/spark/spark-2.4.3-bin-hadoop2.7/sbin" >> /root/.bashrc
+

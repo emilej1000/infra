@@ -1,0 +1,84 @@
+- name: Déployer des conteneurs Docker avec Terraform sur macOS
+  hosts: localhost
+  tasks:
+
+    - name: Vérifier si Terraform est installé
+      ansible.builtin.command:
+        cmd: /usr/local/bin/terraform version
+
+    - name: Supprimer le dossier terraform
+      ansible.builtin.shell:
+        cmd: "rm -rf /tmp/terraform_project/ || true"
+   
+    - name: Copier les fichiers Terraform
+      ansible.builtin.copy:
+        src: ../terraform/
+        dest: /tmp/terraform_project/
+        remote_src: no
+
+    - name: Supprimer les fichiers .*
+      ansible.builtin.shell:
+        cmd: "rm -rf .terraform* || true"
+        chdir: /tmp/terraform_project/
+
+    - name: variable host
+      ansible.builtin.shell:
+        cmd: "echo 'host=\"localhost\"'>>terraform.tfvars"
+        chdir: /tmp/terraform_project/
+
+    - name: Initialiser Terraform
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/terraform init"
+        chdir: /tmp/terraform_project/
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+    - name: Appliquer la configuration Terraform
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/terraform apply -auto-approve"
+        chdir: /tmp/terraform_project/
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+- name: Déployer des conteneurs Docker avec Terraform sur macOS
+  hosts: remote_host
+  tasks:
+
+    - name: Vérifier si Terraform est installé
+      ansible.builtin.command:
+        cmd: /usr/local/bin/terraform version
+
+    - name: Supprimer le dossier terraform
+      ansible.builtin.shell:
+        cmd: "rm -rf /tmp/terraform_project/ || true"
+        chdir: /tmp/terraform_project/
+
+    - name: Copier les fichiers Terraform
+      ansible.builtin.copy:
+        src: ../terraform/
+        dest: /tmp/terraform_project/
+        remote_src: no
+
+    - name: Supprimer les fichiers .*
+      ansible.builtin.shell:
+        cmd: "rm -rf .terraform*"
+        chdir: /tmp/terraform_project/
+
+    - name: variable host
+      ansible.builtin.shell:
+        cmd: "echo 'host=\"remote_host\"'>>terraform.tfvars"
+        chdir: /tmp/terraform_project/
+
+    - name: Initialiser Terraform
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/terraform init"
+        chdir: /tmp/terraform_project/
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+    - name: Appliquer la configuration Terraform
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/terraform apply -auto-approve"
+        chdir: /tmp/terraform_project/
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"

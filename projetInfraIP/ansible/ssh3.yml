@@ -1,0 +1,48 @@
+- name: Générer et distribuer des clés SSH entre les conteneurs
+  hosts: localhost
+  become: no
+  tasks:
+
+    - name: Ajouter les clés des serveurs à known_hosts
+      shell: ssh -o StrictHostKeyChecking=no root@{{ item }}
+      with_items:
+        - "172.16.0.10"
+        - "172.16.0.11"
+        - "172.16.0.12"
+        - "172.16.0.13"
+
+    - name: Update python dans les containers
+      ansible.builtin.shell: 
+        cmd: "docker exec {{item}} /bin/bash -c 'apt-get update && apt-get install -y python3.8 && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1'"
+      with_items:
+        - "master"
+        - "slave-1"
+        - "slave-2"
+        - "slave-3"
+
+- name: Générer et distribuer des clés SSH entre les conteneurs
+  hosts: master_container
+  become: no
+  tasks:
+
+    - name: Copier la config ssh
+      ansible.builtin.copy:
+        src: ~/.ssh/config
+        dest: /root/.ssh/config
+        remote_src: no
+
+    - name: test
+      ansible.builtin.shell: cat /root/.ssh/config
+
+    - name: Ajouter les clés des serveurs à known_hosts
+      shell: ssh -o StrictHostKeyChecking=no root@{{ item }}
+      with_items:
+        - "172.16.0.11"
+        - "172.16.0.12"
+        - "172.16.0.13"
+
+
+
+
+
+

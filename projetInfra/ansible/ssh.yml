@@ -1,0 +1,55 @@
+- name: Générer et distribuer des clés SSH entre les conteneurs
+  hosts: localhost
+  become: no
+  tasks:
+    - name: Générer une clé SSH dans le conteneur master
+      ansible.builtin.shell:
+        cmd: "docker exec master ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -N ''"
+      register: ssh_keygen_result
+      ignore_errors: yes
+
+    - name: Afficher la clé publique générée dans master
+      ansible.builtin.shell:
+        cmd: "docker exec master cat /root/.ssh/id_rsa.pub"
+      register: public_key
+      changed_when: false
+
+    - name: Copier la clé publique dans authorized_keys de master
+      ansible.builtin.shell:
+        cmd: "docker exec master /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+      when: ssh_keygen_result.changed
+
+    - name: Copier la clé publique dans slave-3
+      ansible.builtin.shell:
+        cmd: "docker exec slave-3 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+      when: ssh_keygen_result.changed
+
+    - name: Sauvegarder la clé publique localement
+      ansible.builtin.copy:
+        content: "{{ public_key.stdout }}"
+        dest: "/tmp/master_id_rsa.pub"
+
+- name: Générer et distribuer des clés SSH entre les conteneurs
+  hosts: remote_host
+  become: no
+  tasks:
+
+    - name: Charger la clé publique de master
+      ansible.builtin.copy:
+        src: "/tmp/master_id_rsa.pub"
+        dest: "/tmp/master_id_rsa.pub"
+        remote_src: no
+
+    - name: Afficher la clé publique générée dans master
+      ansible.builtin.shell:
+        cmd: "cat /tmp/master_id_rsa.pub"
+      register: public_key
+
+    - name: Copier la clé publique dans slave-1
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/docker exec slave-1 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"
+
+
+    - name: Copier la clé publique dans slave-2
+      ansible.builtin.shell:
+        cmd: "/usr/local/bin/docker exec slave-2 /bin/bash -c 'echo \"{{ public_key.stdout }}\" >> /root/.ssh/authorized_keys'"

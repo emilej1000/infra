@@ -1,0 +1,19 @@
+Host master
+    HostName ip_local
+    Port 8084
+    User root
+
+Host slave-3
+    HostName ip_local
+    Port 8083
+    User root
+
+Host slave-1
+    HostName ip_remote
+    Port 8081
+    User root
+
+Host slave-2
+    HostName ip_remote
+    Port 8082
+    User root

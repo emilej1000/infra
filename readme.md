@@ -18,7 +18,7 @@ Il contient les programmes et scripts permettant de déployer le wordcount sur l
 
 # Mise en place
 
-Avant de déployer l'infrastructure, il est nécessaire de mettre en place une connexion ssh entre les deux hôtes physiques, ainsi que de modifier le fichier inventory pour adapter les ip et users à l'infrastructure. Tout le déploiement se fera ensuite par ansible.
+Avant de déployer l'infrastructure, il est nécessaire de mettre en place une connexion ssh entre les deux hôtes physiques, ainsi que de modifier le fichier inventory pour adapter les ip et users à l'infrastructure, on ajoute également le fichier config au dossier .ssh de l'hôte déployant l'infra. Il sera éventuellement nécessaire de modifier certains playbooks, par exemple si les paths différent pour docker/terraform. Tout le déploiement se fera ensuite par ansible.
 
 - deploy.yml : premier playbook qui applique la configuration terraform sur les deux hôtes, on aboutit après son déploiement à deux containers sur chaque hôte, master et slave-3 pour l'un, slave-1 et slave-2 pour l'autre. Il s'agit d'images ubuntu permettant la connexion ssh.
 - ssh.yml : permet au master d'accéder en ssh aux slaves en distribuant sa clé publique, nécessaire pour déployer le wordcount.
